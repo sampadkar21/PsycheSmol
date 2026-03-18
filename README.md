@@ -1,9 +1,11 @@
 # PsycheSmol-135M-DPO
 
 [![Model](https://img.shields.io/badge/Model-SmolLM2--135M-blue)](https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct)
-[![License](https://img.shields.io/badge/License-Apache%202.0-green)](LICENSE)
 [![Framework](https://img.shields.io/badge/Framework-PyTorch-red)](https://pytorch.org/)
 [![Library](https://img.shields.io/badge/Library-TRL-orange)](https://github.com/huggingface/trl)
+[![PEFT](https://img.shields.io/badge/PEFT-HuggingFace-yellow)](https://github.com/huggingface/peft)
+[![BitsAndBytes](https://img.shields.io/badge/BitsAndBytes-Quantization-purple)](https://github.com/TimDettmers/bitsandbytes)
+[![License](https://img.shields.io/badge/License-Apache%202.0-green)](LICENSE)
 
 ---
 
@@ -21,7 +23,7 @@ This repository contains the notebooks, merged weights, inference demo, and eval
 
 The goal of this project is to adapt a small instruction-tuned model into a more helpful, empathetic, and preference-aligned mental-health support assistant.
 
-The training pipeline uses the **PsychoCounsel-Preference** dataset, which contains professional psychotherapist-aligned preference pairs for counseling-style responses. The final model is optimized to produce responses that are more empathetic, more context-aware, and better aligned with the preferred answer in each pair.
+The training pipeline uses the **![PsychoCounsel-Preference](https://huggingface.co/datasets/Psychotherapy-LLM/PsychoCounsel-Preference)** dataset, which contains professional psychotherapist-aligned preference pairs for counseling-style responses. The final model is optimized to produce responses that are more empathetic, more context-aware, and better aligned with the preferred answer in each pair.
 
 ---
 
@@ -208,16 +210,6 @@ The DPO stage is the main alignment step and is responsible for the strongest qu
 
 ---
 
-## Dataset
-
-The project uses the **PsychoCounsel-Preference** dataset.
-
-It contains psychotherapist-aligned preference comparisons and is designed for psycho-counseling response alignment.
-
-**Dataset source:** `Psychotherapy-LLM/PsychoCounsel-Preference`
-
----
-
 ## Citation
 
 ### Dataset / Paper
@@ -254,18 +246,3 @@ It contains psychotherapist-aligned preference comparisons and is designed for p
 ```
 
 ---
-
-## Acknowledgements
-
-- Hugging Face Transformers
-- PEFT
-- TRL
-- Bitsandbytes
-- The authors of the PsychoCounsel-Preference dataset
-- The SmolLM2 model authors
-
----
-
-## License
-
-Add your project license here.
