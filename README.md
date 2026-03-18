@@ -1,4 +1,4 @@
-# PsychoCounsel-SmolLM2-135M-DPO
+# PsycheCounsel-SmolLM2-135M-DPO
 
 [![Model](https://img.shields.io/badge/Model-SmolLM2--135M-blue)](https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green)](LICENSE)
