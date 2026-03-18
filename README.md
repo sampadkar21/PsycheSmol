@@ -190,7 +190,7 @@ print(response)
 
 ## Merged Model Weights
 
-- **Merged weights**: ![merged_model_weights]([YOUR_LINK_HERE](https://drive.google.com/drive/folders/1sXwU9dh9Yrc5pw_0OLm1v7VzrRepM7kc?usp=sharing))
+🔗 **[Access the Merged Model Weights Here](https://drive.google.com/drive/folders/1sXwU9dh9Yrc5pw_0OLm1v7VzrRepM7kc?usp=sharing)**
 
 ---
 
