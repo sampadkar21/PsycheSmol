@@ -23,7 +23,7 @@ This repository contains the notebooks, merged weights, inference demo, and eval
 
 The goal of this project is to adapt a small instruction-tuned model into a more helpful, empathetic, and preference-aligned mental-health support assistant.
 
-The training pipeline uses the **![PsychoCounsel-Preference](https://huggingface.co/datasets/Psychotherapy-LLM/PsychoCounsel-Preference)** dataset, which contains professional psychotherapist-aligned preference pairs for counseling-style responses. The final model is optimized to produce responses that are more empathetic, more context-aware, and better aligned with the preferred answer in each pair.
+The training pipeline uses the **[PsychoCounsel-Preference](https://huggingface.co/datasets/Psychotherapy-LLM/PsychoCounsel-Preference)** dataset, which contains professional psychotherapist-aligned preference pairs for counseling-style responses. The final model is optimized to produce responses that are more empathetic, more context-aware, and better aligned with the preferred answer in each pair.
 
 ---
 
