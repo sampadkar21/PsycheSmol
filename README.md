@@ -109,8 +109,6 @@ Final reward summary:
 - **Reward margin**: `6.4719`
 - **Reward accuracy**: `0.9884`
 
-These numbers indicate that the final DPO model strongly prefers the better counseling response over the rejected one.
-
 ---
 
 ## Example Comparison
