@@ -123,9 +123,9 @@ The side-by-side comparison below shows how the responses evolve across the thre
 > Place your screenshot here as `assets/base_sft_dpo_comparison.png`
 
 <p align="center">
-  <img src="[assets/base_sft_dpo_comparison.png](https://github.com/user-attachments/assets/8fa7719e-8936-47f5-baa6-5dd3af915f87)" alt="Base vs SFT vs DPO comparison" width="100%" />
+  <img src="assets/base_sft_dpo_comparison.png" alt="Base vs SFT vs DPO comparison" width="100%" />
 </p>
-![img](<img width="1489" height="1096" alt="image" src="" />)
+
 ---
 
 ## Reward Metric Visualizations
@@ -194,11 +194,7 @@ print(response)
 
 ## Merged Model Weights
 
-Add your final merged weights link here:
-
-- **Merged weights**: `[merged_model_weights](YOUR_LINK_HERE)`
-
-If you upload the model to Hugging Face, replace `YOUR_LINK_HERE` with the final model URL.
+- **Merged weights**: [merged_model_weights]([YOUR_LINK_HERE](https://drive.google.com/drive/folders/1sXwU9dh9Yrc5pw_0OLm1v7VzrRepM7kc?usp=sharing))
 
 ---
 
