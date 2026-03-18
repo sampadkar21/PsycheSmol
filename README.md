@@ -1,111 +1,279 @@
-# 🧠 PsycheSmol-135M-DPO
+# PsychoCounsel-SmolLM2-135M-DPO
 
 [![Model](https://img.shields.io/badge/Model-SmolLM2--135M-blue)](https://huggingface.co/HuggingFaceTB/SmolLM2-135M-Instruct)
 [![License](https://img.shields.io/badge/License-Apache%202.0-green)](LICENSE)
 [![Framework](https://img.shields.io/badge/Framework-PyTorch-red)](https://pytorch.org/)
 [![Library](https://img.shields.io/badge/Library-TRL-orange)](https://github.com/huggingface/trl)
 
-**PsycheSmol-135M-DPO** is a specialized, lightweight language model aligned for **therapeutic conversation and mental health support**. By leveraging Direct Preference Optimization (DPO) on top of a Supervised Fine-Tuning (SFT) foundation, this model provides empathetic, non-judgmental, and safe responses while avoiding the "robotic" or overly prescriptive tone of general-purpose LLMs.
+---
+
+A compact counseling-oriented language model built with a three-stage alignment pipeline:
+
+1. **Base model**: `HuggingFaceTB/SmolLM2-135M-Instruct`
+2. **SFT stage**: supervised fine-tuning on the chosen responses
+3. **DPO stage**: preference alignment on chosen vs. rejected responses
+
+This repository contains the notebooks, merged weights, inference demo, and evaluation visualizations for the full workflow.
 
 ---
 
-A highly empathetic, safe, and conversational AI mental health assistant. This project demonstrates an end-to-end Generative AI alignment pipeline, taking a compact foundational model (`HuggingFaceTB/SmolLM2-135M-Instruct`) and aligning it to complex therapeutic guidelines using SFT and DPO via the **Hugging Face TRL** library.
+## Project Summary
 
-🔗 **[Access the Merged Model Weights Here](https://drive.google.com/drive/folders/1sXwU9dh9Yrc5pw_0OLm1v7VzrRepM7kc?usp=sharing)**
+The goal of this project is to adapt a small instruction-tuned model into a more helpful, empathetic, and preference-aligned mental-health support assistant.
 
-## 📑 Table of Contents
-- [Project Overview](#project-overview)
-- [Training Pipeline & Notebooks](#training-pipeline--notebooks)
-- [DPO Alignment Metrics](#dpo-alignment-metrics)
-- [Output Comparison: Why DPO Wins](#output-comparison-why-dpo-wins)
-- [Usage & Inference](#usage--inference)
-- [Citations](#citations)
-
-## 🔍 Project Overview
-General-purpose LLMs often fail in mental health contexts by offering unsolicited life advice, acting dismissive, or attempting medical diagnoses. The goal of this project is to align an LLM to behave like a compassionate counselor. 
-
-Using the `Psychotherapy-LLM/PsychoCounsel-Preference` dataset, the model was trained to prioritize 7 key therapeutic metrics: **Empathy, Relevance, Clarity, Safety, Exploration, Autonomy, and Staging**. 
-
-## 🛠️ Training Pipeline & Notebooks
-The repository contains three main Jupyter Notebooks documenting the lifecycle:
-
-1. **`sft-finetuning.ipynb`**: Applies LoRA (Low-Rank Adaptation) to fine-tune the base model on high-quality therapeutic responses.
-2. **`dpo-ft.ipynb`**: Utilizes the `trl` **DPOTrainer** to penalize prescriptive advice and reward exploratory, validating responses using a custom weighted preference score.
-3. **`inference.ipynb`**: Runs a comparative qualitative analysis across the Base, SFT, and DPO versions.
+The training pipeline uses the **PsychoCounsel-Preference** dataset, which contains professional psychotherapist-aligned preference pairs for counseling-style responses. The final model is optimized to produce responses that are more empathetic, more context-aware, and better aligned with the preferred answer in each pair.
 
 ---
 
-## 📊 DPO Alignment Metrics
-The following metrics demonstrate the model's progress during the Direct Preference Optimization phase. By training on preference pairs, the model successfully learns to distinguish high-quality therapeutic responses from subpar ones.
+## Repository Contents
+
+| File | Purpose |
+|---|---|
+| `sft-finetuning.ipynb` | Supervised fine-tuning on the chosen counseling responses |
+| `dpo-ft.ipynb` | Direct Preference Optimization using chosen/rejected pairs |
+| `inference.ipynb` | Qualitative inference and model comparison |
+| `assets/` | Screenshots and training visualizations used in this README |
+
+---
+
+## Pipeline Overview
+
+### 1) Base Model
+The starting point is the compact instruction-tuned model:
+
+- `HuggingFaceTB/SmolLM2-135M-Instruct`
+
+This model provides the initial chat/instruction-following ability before counseling-specific alignment.
+
+### 2) SFT Model
+The SFT notebook trains the model on the **chosen** responses from the dataset.
+
+What this stage improves:
+- response structure
+- instruction adherence
+- counseling-style tone
+- basic empathy and supportiveness
+
+### 3) DPO Model
+The DPO notebook trains on **prompt + chosen + rejected** pairs.
+
+What this stage improves:
+- preference alignment
+- reward margin between good and weak responses
+- more consistent empathy
+- stronger relevance to the user’s emotional context
+- better balance between support and safety
+
+---
+
+## How the Three Outputs Differ
+
+| Model | Typical Behavior | Strengths | Limitations |
+|---|---|---|---|
+| **Base** | Generic instruction-following response | Fast, lightweight, neutral | Not specialized for counseling; less empathetic and less grounded |
+| **SFT** | More supportive and structured | Better tone, clearer guidance, improved formatting | Can still sound generic or overly broad |
+| **DPO** | Best-aligned counseling response | Strongest preference alignment, better empathy, better contextual fit | Still a compact model; may remain limited by parameter size |
+
+### Practical interpretation
+- The **base model** gives a reasonable answer, but it is not yet tailored for psycho-counseling.
+- The **SFT model** improves style and helpfulness.
+- The **DPO model** is the best final version because it most reliably prefers the counselor-style answer that is empathetic, relevant, and safe.
+
+---
+
+## Training Results
+
+### SFT Training
+- Base model: `SmolLM2-135M-Instruct`
+- LoRA + DoRA fine-tuning
+- 2 epochs
+- Final logged results:
+  - **Train loss**: `1.2650`
+  - **Eval loss**: `1.2385`
+  - **Train perplexity**: `3.69`
+  - **Eval perplexity**: `3.45`
+
+### DPO Training
+- Preference tuning on `chosen` vs. `rejected`
+- LoRA + DoRA fine-tuning
+- Mixed loss: `sigmoid + sft`
+- Loss weights: `0.85 / 0.15`
+- `beta = 0.1`
+- `max_length = 1024`
+
+Final reward summary:
+- **Chosen reward**: `-1.9532`
+- **Rejected reward**: `-8.4251`
+- **Reward margin**: `6.4719`
+- **Reward accuracy**: `0.9884`
+
+These numbers indicate that the final DPO model strongly prefers the better counseling response over the rejected one.
+
+---
+
+## Example Comparison
+
+### Qualitative behavior
+The side-by-side comparison below shows how the responses evolve across the three stages:
+
+- **Base model**: supportive but generic
+- **SFT model**: more helpful and more empathetic
+- **DPO model**: most polished, aligned, and context-aware
+
+> Place your screenshot here as `assets/base_sft_dpo_comparison.png`
 
 <p align="center">
-  <img src="image_520dc4.png" alt="DPO Training Reward Metrics" width="800">
+  <img src="[assets/base_sft_dpo_comparison.png](https://github.com/user-attachments/assets/8fa7719e-8936-47f5-baa6-5dd3af915f87)" alt="Base vs SFT vs DPO comparison" width="100%" />
+</p>
+![img](<img width="1489" height="1096" alt="image" src="" />)
+---
+
+## Reward Metric Visualizations
+
+The following figure summarizes the DPO training behavior:
+
+- chosen vs rejected rewards
+- reward margin growth
+- reward accuracy
+- reward distribution
+
+> Place your screenshot here as `assets/dpo_reward_metrics.png`
+
+<p align="center">
+  <img src="assets/dpo_reward_metrics.png" alt="DPO reward metrics" width="100%" />
 </p>
 
-### **Key Takeaways:**
-* **Reward Margin:** The increasing gap between the "Chosen" and "Rejected" rewards indicates the model is successfully learning the preference boundary.
-* **Reward Accuracy:** Reaching nearly 100% accuracy early on shows that the preference signal in the dataset was strong and the model successfully captured the desired therapeutic tone.
-* **Chosen Rewards:** The stability of the "Chosen" rewards around the -2.0 mark (relative to the reference model) shows controlled alignment without catastrophic forgetting.
-
 ---
 
-## 🏆 Output Comparison: Why DPO Wins
+## Inference
 
-To understand the impact of the alignment pipeline, we evaluated the models on a complex scenario involving parental guilt and burnout.
-
-**User Query:**
-> *"I feel like I'm failing as a parent because I don't have enough time or energy to spend with my kids... I want to be present and happy with them, but I'm just so drained all the time."*
-
-### 🔍 Analysis of Versions:
-* **Base Model (`SmolLM2-135M-Instruct`)**: Responds like a generic life coach. It immediately jumps to unsolicited time-management advice, which lacks emotional validation and can feel dismissive.
-* **SFT Model**: Shows improved structure but struggles with nuance. It attempts empathy but uses clunky phrasing (e.g., *"remember that you're not doing a perfect job"*) which can inadvertently amplify the user's guilt.
-* **DPO Model (Final)**: Exhibits superior therapeutic alignment. It strongly validates the user's guilt without judgment and uses open-ended questions to grant the user autonomy.
-
----
-
-## 🚀 Usage & Inference
+The final merged model can be loaded directly for inference.
 
 ```python
+from transformers import AutoTokenizer, AutoModelForCausalLM
 import torch
-from transformers import AutoModelForCausalLM, AutoTokenizer
 
-device = "cuda" if torch.cuda.is_available() else "cpu"
-model_path = "your-username/PsycheSmol-135M-DPO" 
+model_path = "PATH_TO_YOUR_MERGED_MODEL"
 
 tokenizer = AutoTokenizer.from_pretrained(model_path)
-model = AutoModelForCausalLM.from_pretrained(model_path, torch_dtype=torch.float16).to(device)
+model = AutoModelForCausalLM.from_pretrained(
+    model_path,
+    torch_dtype=torch.float16,
+    device_map="auto"
+)
 
-SYSTEM_PROMPT = "You are a compassionate AI mental health assistant. Respond with empathy and supportive guidance."
+system_prompt = (
+    "You are a compassionate AI mental health assistant. "
+    "Respond with empathy, provide supportive guidance, and encourage healthy coping strategies "
+    "without giving medical diagnoses."
+)
 
 messages = [
-    {"role": "system", "content": SYSTEM_PROMPT},
-    {"role": "user", "content": "I'm feeling really overwhelmed with everything lately."}
+    {"role": "system", "content": system_prompt},
+    {"role": "user", "content": "I feel overwhelmed and cannot sleep."}
 ]
 
 prompt = tokenizer.apply_chat_template(messages, tokenize=False, add_generation_prompt=True)
-inputs = tokenizer(prompt, return_tensors="pt").to(device)
+inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
 
 with torch.no_grad():
-    outputs = model.generate(**inputs, max_new_tokens=300, temperature=0.7, top_p=0.9, do_sample=True)
+    outputs = model.generate(
+        **inputs,
+        max_new_tokens=300,
+        temperature=1.0,
+        top_p=0.9,
+        do_sample=True,
+        pad_token_id=tokenizer.eos_token_id,
+    )
 
 response = tokenizer.decode(outputs[0][inputs.input_ids.shape[1]:], skip_special_tokens=True)
 print(response)
 ```
-```bibtex
-@misc{allal2025smollm2,
-      title={SmolLM2: When Smol Goes Big -- Data-Centric Training of a Small Language Model}, 
-      author={Loubna Ben Allal and Anton Lozhkov and Elie Bakouch and Leandro von Werra and Thomas Wolf},
-      year={2025},
-      eprint={2502.02737},
-      archivePrefix={arXiv},
-      primaryClass={cs.CL}
-}
 
-@misc{psychocounsel2024,
-  author = {Psychotherapy-LLM},
-  title = {PsychoCounsel-Preference Dataset},
-  year = {2024},
-  publisher = {Hugging Face},
-  howpublished = {\url{[https://huggingface.co/datasets/Psychotherapy-LLM/PsychoCounsel-Preference](https://huggingface.co/datasets/Psychotherapy-LLM/PsychoCounsel-Preference)}}
+---
+
+## Merged Model Weights
+
+Add your final merged weights link here:
+
+- **Merged weights**: `[merged_model_weights](YOUR_LINK_HERE)`
+
+If you upload the model to Hugging Face, replace `YOUR_LINK_HERE` with the final model URL.
+
+---
+
+## Notes on the Training Setup
+
+- Base model: `HuggingFaceTB/SmolLM2-135M-Instruct`
+- SFT and DPO both use **LoRA + DoRA**
+- Training uses gradient checkpointing and memory-efficient optimizers
+- DPO is configured with a preference dataset containing:
+  - `prompt`
+  - `chosen`
+  - `rejected`
+
+The DPO stage is the main alignment step and is responsible for the strongest qualitative improvement.
+
+---
+
+## Dataset
+
+The project uses the **PsychoCounsel-Preference** dataset.
+
+It contains psychotherapist-aligned preference comparisons and is designed for psycho-counseling response alignment.
+
+**Dataset source:** `Psychotherapy-LLM/PsychoCounsel-Preference`
+
+---
+
+## Citation
+
+### Dataset / Paper
+```bibtex
+@article{zhang2025psychocounsel,
+  title   = {Preference Learning Unlocks LLMs' Psycho-Counseling Skills},
+  author  = {Zhang, Mian and Eack, Shaun M. and Chen, Zhiyu Zoey},
+  journal = {arXiv preprint arXiv:2502.19731},
+  year    = {2025},
+  url     = {https://arxiv.org/abs/2502.19731}
 }
 ```
+
+### Base Model
+```bibtex
+@article{benallal2025smollm2,
+  title   = {SmolLM2: When Smol Goes Big -- Data-Centric Training of a Small Language Model},
+  author  = {Ben Allal, Loubna and Lozhkov, Anton and Bakouch, Elie and others},
+  journal = {arXiv preprint arXiv:2502.02737},
+  year    = {2025},
+  url     = {https://arxiv.org/abs/2502.02737}
+}
+```
+
+### DPO Method
+```bibtex
+@article{rafailov2023dpo,
+  title   = {Direct Preference Optimization: Your Language Model is Secretly a Reward Model},
+  author  = {Rafailov, Rafael and Sharma, Archit and Mitchell, Eric and Ermon, Stefano and Manning, Christopher D. and Finn, Chelsea},
+  journal = {arXiv preprint arXiv:2305.18290},
+  year    = {2023},
+  url     = {https://arxiv.org/abs/2305.18290}
+}
+```
+
+---
+
+## Acknowledgements
+
+- Hugging Face Transformers
+- PEFT
+- TRL
+- Bitsandbytes
+- The authors of the PsychoCounsel-Preference dataset
+- The SmolLM2 model authors
+
+---
+
+## License
+
+Add your project license here.
