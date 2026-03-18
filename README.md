@@ -7,7 +7,7 @@
 
 ---
 
-A compact counseling-oriented language model built with a three-stage alignment pipeline:
+A compact counseling-oriented language model built with a two-stage alignment pipeline:
 
 1. **Base model**: `HuggingFaceTB/SmolLM2-135M-Instruct`
 2. **SFT stage**: supervised fine-tuning on the chosen responses
@@ -120,10 +120,8 @@ The side-by-side comparison below shows how the responses evolve across the thre
 - **SFT model**: more helpful and more empathetic
 - **DPO model**: most polished, aligned, and context-aware
 
-> Place your screenshot here as `assets/base_sft_dpo_comparison.png`
-
 <p align="center">
-  <img src="assets/base_sft_dpo_comparison.png" alt="Base vs SFT vs DPO comparison" width="100%" />
+  <img src="assets/base_sft_dpo_outputs.png" alt="Base vs SFT vs DPO comparison" width="100%" />
 </p>
 
 ---
@@ -137,10 +135,8 @@ The following figure summarizes the DPO training behavior:
 - reward accuracy
 - reward distribution
 
-> Place your screenshot here as `assets/dpo_reward_metrics.png`
-
 <p align="center">
-  <img src="assets/dpo_reward_metrics.png" alt="DPO reward metrics" width="100%" />
+  <img src="assets/dpo_rewards.png" alt="DPO reward metrics" width="100%" />
 </p>
 
 ---
